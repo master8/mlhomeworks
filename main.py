@@ -66,12 +66,12 @@ from string import ascii_lowercase, digits, whitespace
 cyrillic = u"абвгдеёжзийклмнопрстуфхцчшщъыьэюя"
 allowed_characters = ascii_lowercase + digits + cyrillic + whitespace
 
-text = np.array(co[:1].text)[0]
-
-clean_text = ''.join([character if character in set(allowed_characters) else ' ' for character in text.lower()])
-clean_text = ' '.join(clean_text.split())
-splited_text = clean_text.split()
-symbols = list(clean_text)
+# text = np.array(co[:1].text)[0]
+#
+# clean_text = ''.join([character if character in set(allowed_characters) else ' ' for character in text.lower()])
+# clean_text = ' '.join(clean_text.split())
+# splited_text = clean_text.split()
+# symbols = list(clean_text)
 
 
 def clean_text(text: str):
@@ -81,7 +81,7 @@ def clean_text(text: str):
 co['clean_text'] = co.text.progress_apply(clean_text)
 
 
-n = 3
+n = 2
 
 def build_shingles(list):
     shingles = []
@@ -123,11 +123,9 @@ def build_vector(shingles):
 
 co['vectors'] = co.shingles_2.progress_apply(build_vector)
 vectors = np.array(co.vector).tolist()
-# x = TruncatedSVD(n_components=300).fit_transform(vectors)
-# co['vectors_300'] = x.tolist()
 
 
-jaccard_score([], [], average='micro')
+# jaccard_score([], [], average='micro')
 
 
 index = {}
@@ -203,7 +201,6 @@ file.close()
 
 co['count_sim'] = co.shingles_2.progress_apply(count_sim)
 co_sim = co[co.count_sim > 0]
-# co_sim['sim'] = co_sim.id.progress_apply(get_sim)
 
 co_sim_1 = co_sim[co_sim.count_sim == 1]
 co_sim_1['sim'] = co_sim_1.id.progress_apply(get_sim)

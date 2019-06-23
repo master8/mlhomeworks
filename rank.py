@@ -74,6 +74,7 @@ rank = {}
 for i, value in enumerate(vector):
     rank[i] = value
 
+n = 10
 
 # all
 print()

@@ -59,3 +59,40 @@ def xor(hex_one: str, hex_two: str):
 print('192C352036755D6D7D2050776472264E6A7A21566F747666'.lower() == xor(hex_one, hex_two))
 
 
+
+# TASK 3
+
+def single_char_xor(hex: str, symbol):
+    input_bytes = bytes.fromhex(hex)
+    return bytes([b ^ symbol for b in input_bytes])
+
+hex = '19367831362e3d2b2c353d362c783136783336372f343d3c3f3d7839342f39212b782839212b782c303d783a3d2b2c7831362c3d2a3d2b2c'
+
+# for i in range(0, 256):
+#     print(single_char_xor(hex, i))
+
+freq = {}
+
+for symbol in bytes.fromhex(hex):
+    if symbol in freq:
+        freq[symbol] = freq[symbol] + 1
+    else:
+        freq[symbol] = 1
+
+sorted_freq = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+
+symbol_top1 = sorted_freq[0][0]
+symbol_top2 = sorted_freq[1][0]
+
+print(symbol_top1 ^ ord(' '))
+print(single_char_xor(hex, symbol_top1 ^ ord(' ')))
+print(single_char_xor(hex, symbol_top2 ^ ord('e')))
+
+print(symbol_top1 ^ ord('e'))
+print(single_char_xor(hex, symbol_top1 ^ ord('e')))
+print(single_char_xor(hex, symbol_top2 ^ ord(' ')))
+
+
+answer = 'An investment in knowledge always pays the best interest'
+
+

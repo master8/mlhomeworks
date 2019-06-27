@@ -44,3 +44,18 @@ print('SSdtIHN0dWR5aW5nIENyeXB0b2dyYXBoeSBsaWtlIENsYXVkZSBFbHdvb2QgU2hhbm5vbiE='
 
 # TASK 2
 
+
+hex_one = '506561636520416c6c204f7665722054686520576f726c64'
+hex_two = '4949544353551c0111001f010100061a021f010100061a02'
+
+
+def xor(hex_one: str, hex_two: str):
+    input_bytes_1 = bytes.fromhex(hex_one)
+    input_bytes_2 = bytes.fromhex(hex_two)
+
+    return bytes([b1 ^ b2 for b1, b2 in zip(input_bytes_1, input_bytes_2)]).hex()
+
+
+print('192C352036755D6D7D2050776472264E6A7A21566F747666'.lower() == xor(hex_one, hex_two))
+
+

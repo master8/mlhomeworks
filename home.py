@@ -637,3 +637,24 @@ for hex in hex_input:
         answer = (original, score)
 
 print(answer)
+
+
+
+# TASK 5
+
+text = b'''Shannon contributed to the field of cryptanalysis for national defense during World War II, 
+including his basic work on codebreaking and secure telecommunications.'''
+
+key = b'Shannon'
+
+output_bytes = b''
+index = 0
+
+for byte in text:
+    output_bytes += bytes([byte ^ key[index]])
+    if (index + 1) == len(key):
+        index = 0
+    else:
+        index += 1
+
+print(output_bytes.hex() == '00000000000000730b0e001a1d07311d150b0a4f1a3c4815060b4f083a0d0d0a4e0008730b13171e1b0f3d090d171d061d730e0e1c4e010f27010e000f034e370d070b001c0b730c141c070109733f0e1c020b4e0409134e272642736208000d031b37010f094e07072048030f1d060d731f0e1c054f013d4802010a0a0c210d000507010973090f0a4e1c0b301d130b4e1b0b3f0d020103021b3d01020f1a06013d1b4f')

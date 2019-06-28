@@ -602,6 +602,7 @@ ffb61f38e7141da522595f534e5abf5367af54e0e8be623a15d6b418cc2c
 e95999c3543ce07679fe1289eda4f5a00764d857555689a3cb5d0a05da60
 '''.split()
 
+
 def get_english_score(input_bytes):
     character_frequencies = {
         'a': .08167, 'b': .01492, 'c': .02782, 'd': .04253,
@@ -615,7 +616,7 @@ def get_english_score(input_bytes):
     return sum([character_frequencies.get(chr(byte), 0) for byte in input_bytes.lower()])
 
 
-result = []
+answer = ('', 0)
 
 for hex in hex_input:
     freq = {}
@@ -631,10 +632,8 @@ for hex in hex_input:
 
     original = single_char_xor(hex, symbol_top1 ^ ord(' '))
     score = get_english_score(original)
-    result.append((original, score))
 
+    if score > answer[1]:
+        answer = (original, score)
 
-sorted_results = sorted(result, key=lambda x: x[1], reverse=True)
-
-answer = sorted_results[0]
 print(answer)

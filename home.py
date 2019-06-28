@@ -658,3 +658,86 @@ for byte in text:
         index += 1
 
 print(output_bytes.hex() == '00000000000000730b0e001a1d07311d150b0a4f1a3c4815060b4f083a0d0d0a4e0008730b13171e1b0f3d090d171d061d730e0e1c4e010f27010e000f034e370d070b001c0b730c141c070109733f0e1c020b4e0409134e272642736208000d031b37010f094e07072048030f1d060d731f0e1c054f013d4802010a0a0c210d000507010973090f0a4e1c0b301d130b4e1b0b3f0d020103021b3d01020f1a06013d1b4f')
+
+
+
+# TASK 6
+
+import base64
+
+
+with open('task16.input') as input_file:
+    ciphertext = base64.b64decode(input_file.read())
+
+
+def get_top_freq(hex):
+    freq = {}
+
+    for symbol in hex:
+        if symbol in freq:
+            freq[symbol] = freq[symbol] + 1
+        else:
+            freq[symbol] = 1
+
+    sorted_freq = sorted(freq.items(), key=lambda x: x[1], reverse=True)
+    return sorted_freq[0]
+
+
+n = 0
+
+for i in range(1, len(ciphertext)):
+    t = ciphertext[i:]
+    t = bytes([b1 ^ b2 for b1, b2 in zip(t, ciphertext)])
+    score = get_top_freq(t)[1]/len(t)
+    if score > 0.05:
+        n = i
+        break
+
+chuncks = [ciphertext[i:i + n] for i in range(0, len(ciphertext), n)]
+
+tops = []
+
+for i in range(0, n):
+    group = []
+    for ch in chuncks[:len(chuncks) - 1]:
+        group.append(ch[i])
+
+    tops.append(get_top_freq(group))
+
+print(bytes([x[0] ^ ord(' ') for x in tops]))
+print(bytes([x[0] ^ ord('e') for x in tops]))
+
+allow_chars = b'abcdefghijklmnopqrstuvwxyz '
+
+key = b''
+
+for s in tops:
+    r = bytes([s[0] ^ ord(' ')])
+    if r.lower() in allow_chars:
+        key += r
+    else:
+        r = bytes([s[0] ^ ord('e')])
+        if r.lower() in allow_chars:
+            key += r
+        else:
+            r = bytes([s[0] ^ ord('t')])
+            if r.lower() in allow_chars:
+                key += r
+            else:
+                key += b'_'
+
+# b'Roberp Laurenco Binoyn'
+
+key = b'Robert Laurence Binyon'
+
+output_bytes = b''
+index = 0
+
+for byte in ciphertext:
+    output_bytes += bytes([byte ^ key[index]])
+    if (index + 1) == len(key):
+        index = 0
+    else:
+        index += 1
+
+print(output_bytes)
